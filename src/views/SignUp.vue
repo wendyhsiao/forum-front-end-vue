@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <form class="w-100">
+    <form class="w-100" @submit.prevent.stop="handleSubmit">
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">
           Sign Up
@@ -11,6 +11,7 @@
         <label for="name">Name</label>
         <input
           id="name"
+          v-model="name"
           name="name"
           type="text"
           class="form-control"
@@ -25,6 +26,7 @@
         <label for="email">Email</label>
         <input
           id="email"
+          v-model="email"
           name="email"
           type="email"
           class="form-control"
@@ -38,6 +40,7 @@
         <label for="password">Password</label>
         <input
           id="password"
+          v-model="password"
           name="password"
           type="password"
           class="form-control"
@@ -51,6 +54,7 @@
         <label for="password-check">Password Check</label>
         <input
           id="password-check"
+          v-model="passwordCheck"
           name="passwordCheck"
           type="password"
           class="form-control"
@@ -84,5 +88,24 @@
 
 <script>
 export default {
+  data () {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      passwordCheck: ''
+    }
+  },
+  methods: {
+    handleSubmit () {
+      const data = JSON.stringify({
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        passwordCheck: this.passwordCheck
+      })
+      console.log('data',data)
+    }
+  }
 }
 </script>>

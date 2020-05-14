@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SignIn from '../views/SignIn.vue'
-import SignUp from '../views/SignUp.vue'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -15,7 +14,7 @@ Vue.use(VueRouter)
   {
     path: '/signup',
     name: 'sign-up',
-    component: SignUp
+    component: () => import('../views/SignUp.vue')
   },
   {
     path: '*',
