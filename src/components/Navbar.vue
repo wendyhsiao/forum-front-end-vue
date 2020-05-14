@@ -33,27 +33,62 @@
        </router-link>
 
         <!-- is user is login -->
+        <template v-if="isAuthenticated">
           <router-link
              to="#" 
              class="text-white mr-3"
           > 
-           使用者 您好
-         </router-link>
-         <button
+            {{ currentUser.name || '使用者' }} 您好
+          </router-link>
+          <button
            type="button" 
            class="btn btn-sm btn-outline-success my-2 my-sm-0"
           >
            登出
           </button>
+        </template>  
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+const dummyUser = {
+  currentUser: {
+    id: 1,
+    name: '管理者',
+    email: 'root@example.com',
+    image: 'https://i.pravatar.cc/300',
+    isAdmin: true
+  },
+  isAuthenticated: true
+}
 
 export default {
   name: 'Navbar',
+  data () {
+    return {
+      currentUser: {
+        id: -1,
+        name: '',
+        email: '',
+        image: '',
+        isAdmin: false
+      },
+      isAuthenticated: false
+    }
+  },
+  created () {
+    this.fetchUser()
+  },
+  methods: {
+    fetchUser () {
+      this.currentUser = {
+        ...this.currentUser,
+        ...dummyUser.currentUser
+      },
+      this.isAuthenticated = dummyUser.isAuthenticated
+    }
   }
 }
 </script>>
