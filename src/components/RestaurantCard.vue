@@ -21,14 +21,18 @@
       </div>
       <div class="card-footer">
         <button
+          v-if="restaurant.isFavorited"
           type="button"
           class="btn btn-danger btn-border favorite mr-2"
+          @click.stop.prevent="deleteFavorite"
         >
           移除最愛
         </button>
         <button
+          v-else
           type="button"
           class="btn btn-primary btn-border favorite mr-2"
+          @click.stop.prevent="addFavorite"
         >
           加到最愛
         </button>
@@ -61,7 +65,20 @@ export default {
     return {
       restaurant: this.initialRestaurant
     }
+  },
+  methods: {
+    addFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: true
+      }
+    },
+    deleteFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: false
+      }
+    }
   }
-
 }
 </script>
