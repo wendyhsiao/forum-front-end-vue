@@ -18,17 +18,21 @@
           >
         </router-link>
         <h2>{{user.name}}</h2>
-        <span class="badge badge-secondary">追蹤人數：{{user.Followers.length}}</span>
+        <span class="badge badge-secondary">追蹤人數：{{user.FollowerCount}}</span>
         <p class="mt-3">
           <button
+            v-if="user.isFollowed"
             type="button"
             class="btn btn-danger"
+            @click.stop.prevent="deleteFollowed(user.id)"
           >
             取消追蹤
           </button>
           <button
+            v-else
             type="button"
             class="btn btn-primary"
+            @click.stop.prevent="addFollowed(user.id)"
           >
             追蹤
           </button>
@@ -1006,7 +1010,33 @@ export default {
   },
   methods: {
     fetchUsers() {
-      this.users = dummyDate.users.filter(user => user.Followers.length > 0).slice(0, 10)
+      this.users = dummyDate.users.filter(user => user.FollowerCount > 0).slice(0, 10)
+    },
+    addFollowed(userId) {
+      this.users = this.users.map(user => {
+        if (user.id !== userId) {
+          return user
+        } else {
+          return {
+            ...user,
+            FollowerCount: user.FollowerCount + 1,
+            isFollowed: true
+          }
+        }
+      })
+    },
+    deleteFollowed(userId) {
+      this.users = this.users.map(user => {
+        if (user.id !== userId) {
+          return user
+        } else {
+          return {
+            ...user,
+            FollowerCount: user.FollowerCount - 1,
+            isFollowed: false
+          }
+        }
+      })
     }
   }
 };
