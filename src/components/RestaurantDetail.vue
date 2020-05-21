@@ -40,6 +40,7 @@
         v-if="restaurant.isFavorited"
         type="button"
         class="btn btn-danger btn-border mr-2"
+        @click.stop.prevent="deleteFavorite"
       >
         移除最愛
       </button>
@@ -47,6 +48,7 @@
         v-else
         type="button"
         class="btn btn-primary btn-border mr-2"
+        @click.stop.prevent="addFavorite"
       >
         加到最愛
       </button>
@@ -54,6 +56,7 @@
         v-if="restaurant.isLiked"
         type="button"
         class="btn btn-danger like mr-2"
+        @click.stop.prevent="deleteLike"
       >
         Unlike
       </button>
@@ -61,6 +64,7 @@
         v-else
         type="button"
         class="btn btn-primary like mr-2"
+        @click.stop.prevent="addLike"
       >
         Like
       </button>
@@ -80,6 +84,32 @@ export default {
     return {
       restaurant: this.initialRestaurant
     }
+  },
+  methods: {
+    addFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: true
+      }
+    },
+    deleteFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: false
+      }
+    },
+    addLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: true
+      }
+    },
+    deleteLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: false
+      }
+    },
   }
 }
 </script>
