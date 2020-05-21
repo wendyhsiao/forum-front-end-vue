@@ -22,7 +22,7 @@
         </h3>
         <p>{{comment.text}}</p>
         <footer class="blockquote-footer">
-          {{comment.createdAt}}
+          {{comment.createdAt | fromNow}}
         </footer>
       </blockquote>
       <hr>
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 const dummyUser = {
   currentUser: {
     id: 1,
@@ -43,6 +45,14 @@ const dummyUser = {
 }
 
 export default {
+  filters: {
+    fromNow(datetime) {
+      if(!datetime) {
+        return '-'
+      }
+      return moment(datetime).fromNow()
+    }
+  },
   props: {
     restaurantComments: {
       type: Array,
