@@ -5,7 +5,9 @@
     <RestaurantDetail :initial-restaurant="restaurant" />
     <hr />
     <!-- 餐廳評論 RestaurantComments -->
-    <RestaurantComments :restaurant-comments="restaurantComments"/>
+    <RestaurantComments 
+      :restaurant-comments="restaurantComments"
+      @after-delete-comment="afterDeleteComment" />
     <!-- 新增評論 CreateComment -->
   </div>
 </template>
@@ -394,6 +396,11 @@ export default {
         isLiked: dummyDate.isLiked
       },
       this.restaurantComments = dummyDate.restaurant.Comments
+    },
+    afterDeleteComment(commentId) {
+      this.restaurantComments = this.restaurantComments.filter(
+        comment => comment.id !== commentId
+      )
     }
   }
 };
