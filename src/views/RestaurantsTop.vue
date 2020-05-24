@@ -36,14 +36,18 @@
             >Show</a>
 
             <button
+              v-if="restaurant.isFavorited"
               type="button"
               class="btn btn-danger mr-2"
+              @click.stop.prevent="deleteFavorite(restaurant.id)"
             >
               移除最愛
             </button>
             <button
+              v-else
               type="button"
               class="btn btn-primary"
+              @click.stop.prevent="addFavorite(restaurant.id)"
             >
               加到最愛
             </button>
@@ -542,6 +546,32 @@ export default {
   methods: {
     fetchRestaurantsTop() {
       this.restaurants = dummyData.restaurants
+    },
+    addFavorite(restaurantId) {
+      this.restaurants = this.restaurants.map(restaurant => {
+        if (restaurant.id !== restaurantId) {
+          return restaurant
+        } else {
+          return {
+            ...restaurant,
+            isFavorited: true,
+            FavoriteCount: restaurant.FavoriteCount + 1
+          }
+        }
+      })
+    },
+    deleteFavorite(restaurantId) {
+      this.restaurants = this.restaurants.map(restaurant => {
+        if (restaurant.id !== restaurantId) {
+          return restaurant
+        } else {
+          return {
+            ...restaurant,
+            isFavorited: false,
+            FavoriteCount: restaurant.FavoriteCount - 1
+          }
+        }
+      })
     }
   }
 };
