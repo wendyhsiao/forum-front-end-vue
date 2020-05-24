@@ -14,12 +14,12 @@
     >
       <div class="row no-gutters">
         <div class="col-md-4">
-          <a href="#">
+          <router-link :to="{name: 'restaurant', params: {id: restaurant.id}}">
             <img
               class="card-img"
               :src="restaurant.image"
             >
-          </a>
+          </router-link>
         </div>
         <div class="col-md-8">
           <div class="card-body">
@@ -30,10 +30,10 @@
             <p class="card-text">
               {{restaurant.description}}
             </p>
-            <a
-              href="#"
+            <router-link
+              :to="{name: 'restaurant', params: {id: restaurant.id}}"
               class="btn btn-primary mr-2"
-            >Show</a>
+            >Show</router-link>
 
             <button
               v-if="restaurant.isFavorited"
