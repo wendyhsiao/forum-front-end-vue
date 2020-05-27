@@ -38,6 +38,11 @@ Vue.use(VueRouter)
     component: () => import('../views/RestaurantsTop.vue')
   },
   {
+    path: '/restaurants/:id/dashboard',
+    name: 'Restaurant-dashboard',
+    component: () => import('../views/RestaurantDashboard.vue')
+  },
+  {
     path: '/restaurants/:id',
     name: 'restaurant',
     component: () => import('../views/Restaurant.vue')
