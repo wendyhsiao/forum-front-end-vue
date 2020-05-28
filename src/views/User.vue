@@ -6,18 +6,24 @@
       :initial-isFollowed="isFollowed"
       :is-current-user="currentUser.id === user.id"
     />
-    <!-- UserFollowingsCard -->
+    <div class="row">
+      <div class="col-md-4">
+        <!-- UserFollowingsCard -->
+        <UserFollowingsCard :followings="followings" />
+        <!-- UserFollowersCard.vue -->
+      </div>
 
-    <!-- UserFollowersCard.vue -->
-
-    <!-- UserCommentsCard.vue -->
-
-    <!-- UserFavoritedRestaurantsCard.vue -->
+      <div class="col-md-8">
+        <!-- UserCommentsCard.vue -->
+        <!-- UserFavoritedRestaurantsCard.vue -->
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import UserProfileCard from '../components/UserProfileCard.vue'
+import UserFollowingsCard from '../components/UserFollowingsCard.vue'
 
 const dummyData = {
   'profile': {
@@ -1207,7 +1213,8 @@ const dummyUser = {
 
 export default {
   components: {
-    UserProfileCard
+    UserProfileCard,
+    UserFollowingsCard
   },
   data() {
     return {
