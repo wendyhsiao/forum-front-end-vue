@@ -1,0 +1,73 @@
+<template>
+  <div class="card mb-3">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img :src="user.image" />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{user.name}}</h5>
+          <p class="card-text">{{user.email}}</p>
+
+          <ul class="list-unstyled">
+            <li>
+              <strong>{{user.commentsLength}}</strong> 已評論餐廳
+            </li>
+            <li>
+              <strong>{{user.favoritedRestaurantsLength}}</strong> 收藏的餐廳
+            </li>
+            <li>
+              <strong>{{user.followingsLength}}</strong> followings (追蹤者)
+            </li>
+            <li>
+              <strong>{{user.followersLength}}</strong> followers (追隨者)
+            </li>
+          </ul>
+
+
+          <a v-if="isCurrentUser" class="btn btn-primary" href="#">Edit</a>
+          
+          <template v-else>
+            <button
+              v-if="isFollowed"
+              type="button"
+              class="btn btn-danger btn-border favorite mr-2"
+              @click.stop.prevent="deleteFollowing"
+            >取消追蹤</button>
+            <button
+              v-else
+              type="button"
+              class="btn btn-primary btn-border favorite mr-2"
+              @click.stop.prevent="addFollowing"
+            >追蹤</button>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    user: {
+      type: Object,
+      required: true
+    },
+    initialIsFollowed: {
+      type: Boolean,
+      required: true
+    },
+    isCurrentUser: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data() {
+    return {
+      // user: this.initialUser
+      isFollowed: this.initialIsFollowed
+    };
+  }
+};
+</script>

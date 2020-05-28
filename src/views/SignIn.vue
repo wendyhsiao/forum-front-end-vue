@@ -67,7 +67,7 @@ export default {
     }
   },
   methods: {
-    handleSubmit (e) {
+    handleSubmit () {
       const data = JSON.stringify({
         email: this.email,
         password: this.password
