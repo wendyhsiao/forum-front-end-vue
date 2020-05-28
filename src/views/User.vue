@@ -1,8 +1,11 @@
 <template>
   <div class="container py-5">
-    <h1>個人頁面</h1>
     <!-- UserProfileCard -->
-
+    <UserProfileCard 
+      :user="user" 
+      :initial-isFollowed="isFollowed"
+      :is-current-user="currentUser.id === user.id"
+    />
     <!-- UserFollowingsCard -->
 
     <!-- UserFollowersCard.vue -->
@@ -14,6 +17,7 @@
 </template>
 
 <script>
+import UserProfileCard from '../components/UserProfileCard.vue'
 
 const dummyData = {
   'profile': {
@@ -1189,7 +1193,22 @@ const dummyData = {
   },
   'isFollowed': false
 }
+
+const dummyUser = {
+  currentUser: {
+    id: 1,
+    name: '管理者',
+    email: 'root@example.com',
+    image: 'https://i.pravatar.cc/300',
+    isAdmin: true
+  },
+  isAuthenticated: true
+}
+
 export default {
+  components: {
+    UserProfileCard
+  },
   data() {
     return {
       user: {
@@ -1206,7 +1225,13 @@ export default {
       followings: [],
       followers: [],
       comments: [],
-      favoritedRestaurants: []
+      favoritedRestaurants: [],
+      currentUser: {
+        id: -1,
+        name: '',
+        email: '',
+        image: ''
+      }
     }
   },
   created() {
@@ -1233,7 +1258,8 @@ export default {
       this.followings = profile.Followings
       this.followers = profile.Followers
       this.comments = profile.Comments
-      this.favoritedRestaurants = profile. FavoritedRestaurants
+      this.favoritedRestaurants = profile. FavoritedRestaurants,
+      this.currentUser = dummyUser.currentUser
     }
   }
 }
