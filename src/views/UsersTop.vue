@@ -10,7 +10,7 @@
       v-for="user in users"
       :key="user.id"
       class="col-3">
-        <router-link herf="#">
+        <router-link :to="{name: 'user', params: {id: user.id}}">
           <img
             src="user.image"
             width="140px"
