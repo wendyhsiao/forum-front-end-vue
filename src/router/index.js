@@ -6,7 +6,7 @@ import Restaurants from '../views/Restaurants.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'root',
@@ -56,6 +56,16 @@ Vue.use(VueRouter)
     path: '/users/:id',
     name: 'user',
     component: () => import('../views/User.vue')
+  },
+  {
+    path: '/admin',
+    exact: true,
+    redirect: '/admin/restaurants'
+  },
+  {
+    path: '/admin/restaurants',
+    name: 'admin-restaurants',
+    component: () => import('./views/AdminRestaurants.vue')
   },
   {
     path: '*',
