@@ -1,11 +1,11 @@
 <template>
   <div class="container py-5">
     <!-- 後台導覽頁籤 AdminNav -->
+    <AdminNav />
 
-    <a
-      href="#"
-      class="btn btn-primary mb-4"
-    >
+    <a 
+      href="#" 
+      class="btn btn-primary mb-4">
       New Restaurant
     </a>
 
@@ -14,8 +14,11 @@
 </template>
 
 <script>
+import AdminNav from '../components/AdminNav.vue'
+
 export default {
-  
+  components: {
+    AdminNav,
+  }
 }
 </script>
-

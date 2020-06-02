@@ -65,7 +65,7 @@ const routes = [
   {
     path: '/admin/restaurants',
     name: 'admin-restaurants',
-    component: () => import('./views/AdminRestaurants.vue')
+    component: () => import('../views/AdminRestaurants.vue')
   },
   {
     path: '*',
