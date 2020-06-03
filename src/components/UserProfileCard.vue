@@ -25,7 +25,11 @@
           </ul>
 
 
-          <a v-if="isCurrentUser" class="btn btn-primary" href="#">Edit</a>
+          <router-link 
+            v-if="isCurrentUser"
+            :to="{name: 'user-edit', params: {id: user.id}}"
+            class="btn btn-primary">Edit
+          </router-link>
           
           <template v-else>
             <button
