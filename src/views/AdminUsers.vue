@@ -33,11 +33,12 @@
           <td>{{user.email}}</td>
           <td v-if="user.isAdmin">admin</td>
           <td v-else>user</td>
-          <td>
+          <td v-if="currentUser.id !== user.id">
             <button
               v-if="user.isAdmin"
               type="button"
               class="btn btn-link"
+              @click.stop.prevent="toggleUserRole(user.id)"
             >
               set as user
             </button>
@@ -45,6 +46,7 @@
               v-else
               type="button"
               class="btn btn-link"
+              @click.stop.prevent="toggleUserRole(user.id)"
             >
               set as admin
             </button>
@@ -502,6 +504,16 @@ const dummyData = {
     },
   ]
 }
+const dummyUser = {
+  currentUser: {
+    id: 1,
+    name: '管理者',
+    email: 'root@example.com',
+    image: 'https://i.pravatar.cc/300',
+    isAdmin: true
+  },
+  isAuthenticated: true
+}
 
 export default {
   components: {
@@ -509,7 +521,11 @@ export default {
   },
   data() {
     return {
-      users: []
+      users: [],
+      currentUser: {
+        id: -1,
+        name: '',
+      }
     }
   },
   created() {
@@ -518,7 +534,19 @@ export default {
   methods: {
     fetchUser() {
       this.users = dummyData.users
+      this.currentUser = dummyUser.currentUser
     },
+    toggleUserRole(userId) {
+      this.users = this.users.map(user => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            isAdmin: !user.isAdmin
+          }
+        }
+        return user
+      })
+    }
   }
 }
 </script>
