@@ -7,6 +7,7 @@
       <div class="form-row">
         <div class="col-auto">
           <input
+            v-model="newCategoryName"
             type="text"
             class="form-control"
             placeholder="新增餐廳類別..."
@@ -16,6 +17,7 @@
           <button
             type="button"
             class="btn btn-primary"
+            @click.stop.prevent="createCategory"
           >
             新增
           </button>
@@ -77,6 +79,7 @@
 
 <script>
 import AdminNav from '../components/AdminNav.vue'
+import { v4 as uuidv4 } from 'uuid'
 
 const dummyData = {
   categories: [
@@ -113,7 +116,8 @@ export default {
   },
   data(){
     return {
-      categories:[]
+      categories:[],
+      newCategoryName: ''
     }
   },
   created() {
@@ -122,6 +126,14 @@ export default {
   methods: {
     fetchCategories() {
       this.categories = dummyData.categories
+    },
+    createCategory(name) {
+      this.categories.push({
+        id: uuidv4(),
+        name: this.newCategoryName
+      })
+
+      this.newCategoryName = ''
     }
   }
 }
