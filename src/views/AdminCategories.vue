@@ -67,6 +67,7 @@
             <button
               type="button"
               class="btn btn-link mr-2"
+              @click.stop.prevent="deleteCategory(category.id)"
             >
               Delete
             </button>
@@ -128,12 +129,18 @@ export default {
       this.categories = dummyData.categories
     },
     createCategory(name) {
+      console.log('name', name)
       this.categories.push({
         id: uuidv4(),
         name: this.newCategoryName
       })
 
       this.newCategoryName = ''
+    },
+    deleteCategory(categoryId) {        
+      this.categories = this.categories.filter(
+        category => category.id !== categoryId
+      )
     }
   }
 }
