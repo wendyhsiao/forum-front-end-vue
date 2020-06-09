@@ -10,6 +10,11 @@ export default {
     }
   },
   restaurants: {
+    getDetail (restaurantId) {
+      return apiHelper.get(`/admin/restaurants/${restaurantId}`, {
+        headers: { Authorization: `Bearer ${getToken()}` }
+      })
+    },
     get () {
       return apiHelper.get('/admin/restaurants', {
         headers: { Authorization: `Bearer ${getToken()}` }
