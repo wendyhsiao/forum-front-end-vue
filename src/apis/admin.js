@@ -10,6 +10,11 @@ export default {
     }
   },
   restaurants: {
+    get () {
+      return apiHelper.get('/admin/restaurants', {
+        headers: { Authorization: `Bearer ${getToken()}` }
+      })
+    },
     create ({ formData }) {
       console.log('formData', formData)
       return apiHelper.post('/admin/restaurants', formData, {
