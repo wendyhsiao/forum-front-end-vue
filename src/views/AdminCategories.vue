@@ -102,36 +102,8 @@
 
 <script>
 import AdminNav from '../components/AdminNav.vue'
-import { v4 as uuidv4 } from 'uuid'
-
-const dummyData = {
-  categories: [
-    {
-      id: 1,
-      name: '中式料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 2,
-      name: '日本料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 3,
-      name: '義大利料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 4,
-      name: '墨西哥料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    }
-  ]
-}
+import adminAPI from '../apis/admin.js'
+import {Toast} from '../utils/helpers.js'
 
 export default {
   components: {
@@ -147,12 +119,24 @@ export default {
     this.fetchCategories()
   },
   methods: {
-    fetchCategories() {
-      this.categories = dummyData.categories.map(category => ({
-        ...category,
-        isEditing: false,
-        nameCached: ''
-      }))
+    async fetchCategories() {
+      try {
+        
+        const {data} = await adminAPI.categories.get()
+
+        this.categories = data.categories.map(category => ({
+          ...category,
+          isEditing: false,
+          nameCached: ''
+        }))
+
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得分類，請稍後再試'
+        })
+        console.log('error', error)
+      }
     },
     createCategory(name) {
       console.log('name', name)
