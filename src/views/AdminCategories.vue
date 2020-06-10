@@ -17,6 +17,7 @@
           <button
             type="button"
             class="btn btn-primary"
+            :disabled="isProcessing"
             @click.stop.prevent="createCategory"
           >
             新增
@@ -112,7 +113,8 @@ export default {
   data(){
     return {
       categories:[],
-      newCategoryName: ''
+      newCategoryName: '',
+      isProcessing: false
     }
   },
   created() {
@@ -138,14 +140,35 @@ export default {
         console.log('error', error)
       }
     },
-    createCategory(name) {
-      console.log('name', name)
-      this.categories.push({
-        id: uuidv4(),
-        name: this.newCategoryName
-      })
+    async createCategory() {
+      try {
 
-      this.newCategoryName = ''
+        this.isProcessing = true
+
+        const {data} = await adminAPI.categories.create({
+          name: this.newCategoryName
+        })
+        
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+       
+        this.categories.push({
+          id: data.categoryId,
+          name: this.newCategoryName
+        })
+
+        this.isProcessing = false
+        this.newCategoryName = ''
+
+      } catch (error) {
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法新增分類，請稍後再試'
+        })
+        console.log('error', error)
+      }
     },
     deleteCategory(categoryId) {        
       this.categories = this.categories.filter(
