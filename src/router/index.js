@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import SignIn from '../views/SignIn.vue'
 import NotFound from '../views/NotFound.vue'
 import Restaurants from '../views/Restaurants.vue'
+import store from '../store/index.js'
 
 Vue.use(VueRouter)
 
@@ -107,6 +108,13 @@ const routes = [
 const router = new VueRouter({
   linkExactActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => { // 監聽全域的「切換路由」事件
+  console.log('router')
+  store.dispatch('fetchCurrentUser')
+  console.log('next', next)
+  next()
 })
 
 export default router
