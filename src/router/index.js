@@ -111,9 +111,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => { // 監聽全域的「切換路由」事件
-  console.log('router')
   store.dispatch('fetchCurrentUser')
-  console.log('next', next)
   next()
 })
 
