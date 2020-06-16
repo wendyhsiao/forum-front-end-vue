@@ -24,7 +24,6 @@
             </li>
           </ul>
 
-
           <router-link 
             v-if="isCurrentUser"
             :to="{name: 'user-edit', params: {id: user.id}}"
@@ -36,13 +35,13 @@
               v-if="isFollowed"
               type="button"
               class="btn btn-danger btn-border favorite mr-2"
-              @click.stop.prevent="deleteFollowing"
+              @click.stop.prevent="deleteFollowing(user.id)"
             >取消追蹤</button>
             <button
               v-else
               type="button"
               class="btn btn-primary btn-border favorite mr-2"
-              @click.stop.prevent="addFollowing"
+              @click.stop.prevent="addFollowing(user.id)"
             >追蹤</button>
           </template>
         </div>
@@ -53,6 +52,8 @@
 
 <script>
 import {emptyImageFilter} from '../utils/mixins.js'
+import usersAPI from '../apis/users.js'
+import {Toast} from '../utils/helpers.js'
 
 export default {
   props: {
@@ -75,6 +76,49 @@ export default {
       // user: this.initialUser
       isFollowed: this.initialIsFollowed
     };
+  },
+  watch: {
+    initialIsFollowed(isFollowed) {
+      this.isFollowed = isFollowed
+    }
+  },
+  methods: {
+    async addFollowing(userId) {
+      try {
+        const {data} = await usersAPI.addFollowing(userId)
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        this.isFollowed = true
+
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法加入追蹤，請稍後再試'
+        })
+        console.log('error', error)
+      }
+    },
+    async deleteFollowing(userId) {
+      try {
+        const {data} = await usersAPI.deleteFollowing(userId)
+        
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        this.isFollowed = false
+
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法取消追蹤，請稍後再試'
+        })
+        console.log('error', error)
+      }
+    }
   }
 };
 </script>
