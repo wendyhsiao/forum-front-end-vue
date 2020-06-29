@@ -33,22 +33,14 @@
           <td>{{user.email}}</td>
           <td v-if="user.isAdmin">admin</td>
           <td v-else>user</td>
-          <td v-if="currentUser.id !== user.id">
+          <td>
             <button
-              v-if="user.isAdmin"
+              v-if="currentUser.id !== user.id"
               type="button"
               class="btn btn-link"
-              @click.stop.prevent="toggleUserRole(user.id)"
+              @click.stop.prevent="toggleUserRole({userId: user.id, isAdmin: user.isAdmin})"
             >
-              set as user
-            </button>
-            <button
-              v-else
-              type="button"
-              class="btn btn-link"
-              @click.stop.prevent="toggleUserRole(user.id)"
-            >
-              set as admin
+              {{user.isAdmin ? 'set as user' : 'set as admin'}}
             </button>
           </td>
         </tr>
@@ -83,7 +75,7 @@ export default {
       try {
         const {data} = await adminAPI.users.get()
         this.users = data.users
-
+        console.log('data',data)
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -92,16 +84,36 @@ export default {
         console.log('error', error)
       }
     },
-    toggleUserRole(userId) {
-      this.users = this.users.map(user => {
-        if (user.id === userId) {
-          return {
-            ...user,
-            isAdmin: !user.isAdmin
-          }
+    async toggleUserRole({userId, isAdmin}) {
+      try {
+
+        const {data} = await adminAPI.users.update({
+          userId,
+          isAdmin: !isAdmin
+        })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-        return user
-      })
+
+        this.users = this.users.map(user => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              isAdmin: !isAdmin
+            }
+          }
+  
+          return user
+        })
+
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: ''
+        })
+        console.log('error', error)
+      }
     }
   }
 }
