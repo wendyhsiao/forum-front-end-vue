@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import SignIn from '../views/SignIn.vue'
 import NotFound from '../views/NotFound.vue'
 import Restaurants from '../views/Restaurants.vue'
+import store from '../store/index.js'
 
 Vue.use(VueRouter)
 
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'root',
-    redirect: '/restaurants'
+    redirect: '/signin'
   },
   {
     path: '/signin',
@@ -39,7 +40,7 @@ const routes = [
   },
   {
     path: '/restaurants/:id/dashboard',
-    name: 'Restaurant-dashboard',
+    name: 'restaurant-dashboard',
     component: () => import('../views/RestaurantDashboard.vue')
   },
   {
@@ -107,6 +108,11 @@ const routes = [
 const router = new VueRouter({
   linkExactActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => { // 監聽全域的「切換路由」事件
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router

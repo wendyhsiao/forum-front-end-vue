@@ -19,6 +19,7 @@
       <button
         type="submit"
         class="btn btn-primary mr-0"
+        :disabled="isProcessing"
       >
         Submit
       </button>
@@ -27,7 +28,8 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid'
+import commentsAPI from '../apis/comments.js'
+import {Toast} from '../utils/helpers.js'
 
 export default {
   props: {
@@ -38,18 +40,49 @@ export default {
   },
   data() {
     return {
-      text: ''
+      text: '',
+      isProcessing: false
     }
   },
   methods: {
-    handleSubmit() {
-      console.log('submit')
-      this.$emit('after-create-comment', {
-        commentId: uuidv4(),
-        restaurantId: this.restaurantId,
-        text: this.text
-      })
-      this.text='' // 將表單內的資料清空
+    async handleSubmit() {
+      try {
+
+        if (!this.text) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請填寫您的評論'
+          })
+          return
+        }
+
+        this.isProcessing = true
+        const {data} = await commentsAPI.create({
+          restaurantId: this.restaurantId,
+          text: this.text
+        })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        this.$emit('after-create-comment', {
+          commentId: data.commentId,
+          restaurantId: this.restaurantId,
+          text: this.text
+        })
+
+        this.isProcessing = false
+        this.text='' // 將表單內的資料清空
+
+      } catch (error) {
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法新增評論，請稍後再試'
+        })
+        console.log('error', error)
+      }
     }
   }
 }

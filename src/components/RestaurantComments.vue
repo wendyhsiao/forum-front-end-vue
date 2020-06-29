@@ -12,6 +12,7 @@
           v-if="currentUser.isAdmin"
           type="button"
           class="btn btn-danger float-right"
+          :disabled="isProcessing"
           @click.stop.prevent="handleDeleteButtonClick(comment.id)"
         >
           Delete
@@ -34,17 +35,9 @@
 
 <script>
 import { fromNowFilter } from './../utils/mixins'
-
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: '管理者',
-    email: 'root@example.com',
-    image: 'https://i.pravatar.cc/300',
-    isAdmin: true
-  },
-  isAuthenticated: true
-}
+import commentsAPI from '../apis/comments.js'
+import {Toast} from '../utils/helpers.js'
+import {mapState} from 'vuex'
 
 export default {
   // 透過 mixins 屬性將撰寫好的 mixin 放入
@@ -57,13 +50,40 @@ export default {
   },
   data() {
     return {
-      currentUser: dummyUser.currentUser
+      isProcessing: false
     }
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   methods: {
-    handleDeleteButtonClick(commentId) {
-      console.log('handleDeleteButtonClick', commentId)
-      this.$emit('after-delete-comment', commentId)
+    async handleDeleteButtonClick(commentId) {
+      try {
+
+        this.isProcessing = true
+        const {data} = await commentsAPI.delete({commentId})
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        
+        this.$emit('after-delete-comment', commentId)
+
+        Toast.fire({
+          icon: 'success',
+          title: '成功移除評論'
+        })
+        
+        this.isProcessing = false
+
+      } catch (error) {
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法刪除此評論，請稍後再試'
+        })
+        console.log('error', error)
+      }
     }
   }
 }

@@ -24,7 +24,7 @@
       :class="['page-item', {active: currentPage === page}]">
         <router-link
           class="page-link"
-          :to="{name: 'restaurant', query: {categoryId, page}}">
+          :to="{name: 'restaurants', query: {categoryId, page}}">
           {{page}}
         </router-link>
       </li>
