@@ -23,7 +23,7 @@
 import NavTabs from "../components/NavTabs.vue";
 import NewestRestaurants from "../components/NewestRestaurants.vue";
 import NewestComments from "../components/NewestComments.vue"
-import restaurantsFeedsAPI from '../apis/restaurantsFeeds.js'
+import restaurantsAPI from '../apis/restaurants.js'
 import { Toast } from "../utils/helpers.js"
 
 export default {
@@ -44,8 +44,7 @@ export default {
   methods: {
     async fetchFeeds () {
       try {
-        const response = await restaurantsFeedsAPI.getRestaurantsFeeds()
-        const { data } = response
+        const { data } = await restaurantsAPI.getRestaurantsFeeds()
 
         this.restaurants = data.restaurants
         this.comments = data.comments.filter(comment => comment.Restaurant && comment.text)
