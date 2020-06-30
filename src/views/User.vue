@@ -1,26 +1,29 @@
 <template>
   <div class="container py-5">
-    <!-- UserProfileCard -->
-    <UserProfileCard 
-      :user="user" 
-      :initial-is-followed="isFollowed"
-      :is-current-user="currentUser.id === user.id"
-    />
-    <div class="row">
-      <div class="col-md-4">
-        <!-- UserFollowingsCard -->
-        <UserFollowingsCard :followings="followings" />
-        <!-- UserFollowersCard.vue -->
-        <UserFollowersCard :followers="followers" />
-      </div>
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <!-- UserProfileCard -->
+      <UserProfileCard 
+        :user="user" 
+        :initial-is-followed="isFollowed"
+        :is-current-user="currentUser.id === user.id"
+      />
+      <div class="row">
+        <div class="col-md-4">
+          <!-- UserFollowingsCard -->
+          <UserFollowingsCard :followings="followings" />
+          <!-- UserFollowersCard.vue -->
+          <UserFollowersCard :followers="followers" />
+        </div>
 
-      <div class="col-md-8">
-        <!-- UserCommentsCard.vue -->
-        <UserCommentsCard :comments="comments" />
-        <!-- UserFavoritedRestaurantsCard.vue -->
-        <UserFavoritedRestaurantsCard :favoritedRestaurants="favoritedRestaurants" />
+        <div class="col-md-8">
+          <!-- UserCommentsCard.vue -->
+          <UserCommentsCard :comments="comments" />
+          <!-- UserFavoritedRestaurantsCard.vue -->
+          <UserFavoritedRestaurantsCard :favoritedRestaurants="favoritedRestaurants" />
+        </div>
       </div>
-    </div>
+    </template>  
   </div>
 </template>
 
@@ -30,6 +33,7 @@ import UserFollowingsCard from '../components/UserFollowingsCard.vue'
 import UserFollowersCard from '../components/UserFollowersCard.vue'
 import UserCommentsCard from '../components/UserCommentsCard.vue'
 import UserFavoritedRestaurantsCard from '../components/UserFavoritedRestaurantsCard.vue'
+import Spinner from '../components/Spinner.vue'
 import usersAPI from '../apis/users.js'
 import {Toast} from '../utils/helpers.js'
 import { mapState } from 'vuex'
@@ -40,7 +44,8 @@ export default {
     UserFollowingsCard,
     UserFollowersCard,
     UserCommentsCard,
-    UserFavoritedRestaurantsCard
+    UserFavoritedRestaurantsCard,
+    Spinner
   },
   data() {
     return {
@@ -58,7 +63,8 @@ export default {
       followings: [],
       followers: [],
       comments: [],
-      favoritedRestaurants: []
+      favoritedRestaurants: [],
+      isLoading: true
     }
   },
   computed: {
@@ -103,8 +109,10 @@ export default {
         this.followers = profile.Followers
         this.comments = profile.Comments
         this.favoritedRestaurants = profile. FavoritedRestaurants
+        this.isLoading = false
 
       } catch (error) {
+        this.isLoading = false
         Toast.fire({
           icon: 'error',
           title: '無法取得使用者資料，請稍後再試'

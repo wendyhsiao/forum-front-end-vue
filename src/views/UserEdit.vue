@@ -1,6 +1,9 @@
 <template>
   <div class="container py-5">
-    <form @submit.stop.prevent="handleSubmit">
+    <Spinner v-if="isLoading" />
+    <form 
+      v-else
+      @submit.stop.prevent="handleSubmit">
       <div class="form-group">
         <label for="name">Name</label>
         <input
@@ -48,14 +51,19 @@
 import {mapState} from 'vuex'
 import usersAPI from '../apis/users.js'
 import {Toast} from '../utils/helpers.js'
+import Spinner from '../components/Spinner.vue'
 
 export default {
+  components: {
+    Spinner
+  },
   data() {
     return {
-        id: -1,
-        name: '',
-        image: '',
-        isProcessing: false
+      id: -1,
+      name: '',
+      image: '',
+      isProcessing: false,
+      isLoading: true
     }
   },
   computed: {
@@ -86,6 +94,8 @@ export default {
       this.id = id
       this.name = name
       this.image = image
+      
+      this.isLoading = false
     },
     handleFileChange(e) {
       const {files} = e.target
