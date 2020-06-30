@@ -8,6 +8,7 @@
       <router-link
         :to="tab.path"
         class="nav-link"
+        :active-class="($route.name === 'restaurants') ? 'active' : ''"
       >
         {{tab.title}}
       </router-link>
